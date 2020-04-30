@@ -9,9 +9,7 @@ describe('<HomePage />', () => {
     const {
       container: { firstChild },
     } = render(
-      <IntlProvider locale="en">
-        <HomePage />
-      </IntlProvider>,
+        <HomePage />,
     );
     expect(firstChild).toMatchSnapshot();
   });
