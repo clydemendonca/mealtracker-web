@@ -9,7 +9,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import { FormGroup, Label, Input, Button } from 'reactstrap';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectLoginContainer from './selectors';
@@ -26,18 +26,18 @@ export function LoginContainer({ goToRoute }) {
 
   return <div className="login-form w-50">
     <h1 className="text-center">MyMealtracker</h1>
-    <div className="form-group">
-      <label htmlFor="username">Username</label>
-      <input type="text" className="form-control" id="username" aria-describedby="emailHelp" />
-    </div>
-    <div className="form-group">
-      <label htmlFor="password">Password</label>
-      <input type="password" className="form-control" id="password" />
-    </div>
-    <button type="submit" className="btn btn-primary">Login</button>
+    <FormGroup>
+      <Label for="username">Username</Label>
+      <Input type="text" name="text" id="username" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="password">Password</Label>
+      <Input type="password" name="text" id="password" />
+    </FormGroup>
+    <Button color="primary">Login</Button>
     <div className="float-right">
       No account?
-      <button onClick={() => onSignUpClicked()} type="button" className="btn btn-outline-primary ml-2">Sign Up</button>
+      <Button className="ml-3" onClick={() => onSignUpClicked()}  outline color="primary">Sign Up</Button>
     </div>
   </div>;
 }

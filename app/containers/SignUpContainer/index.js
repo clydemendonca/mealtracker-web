@@ -6,6 +6,7 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -28,29 +29,29 @@ export function SignUpContainer() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSignUpClicked = () => {
-    if(username == "") ;
+    if (username == "");
   };
 
   return <div className="sign-up-form w-50">
     <h1 className="text-center">MyMealtracker</h1>
-    <div className="form-group mt-2">
-      <label htmlFor="fullName">Full Name</label>
-      <input value={fullName} onChange={(event) => setFullName(event.target.value)} type="text" className="form-control" id="fullName" aria-describedby="emailHelp" />
-    </div>
-    <div className="form-group">
-      <label htmlFor="username">Username</label>
-      <input value={username} onChange={(event) => setUsername(event.target.value)} type="text" className="form-control" id="username" aria-describedby="emailHelp" />
-    </div>
-    <div className="form-group">
-      <label htmlFor="password">Password</label>
-      <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" className="form-control" id="password" />
-    </div>
-    <div className="form-group">
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <input value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} type="password" className="form-control" id="confirmPassword" />
-    </div>
-    <button onClick={() => onSignUpClicked()} type="button" className="btn btn-primary">Sign Up</button>
-  </div>;;
+    <FormGroup>
+      <Label for="fullName">Full Name</Label>
+      <Input value={fullName} onChange={(event) => setFullName(event.target.value)} type="text" id="fullName" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="username">Username</Label>
+      <Input value={username} onChange={(event) => setUsername(event.target.value)}  type="text" id="username" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="password">Password</Label>
+      <Input value={password} onChange={(event) => setPassword(event.target.value)}  type="password" id="password" />
+    </FormGroup>
+    <FormGroup>
+      <Label for="confirmPassword">Confirm Password</Label>
+      <Input value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}  type="password" id="confirmPassword" />
+    </FormGroup>
+    <Button color="primary">Login</Button>
+  </div>;
 }
 
 SignUpContainer.propTypes = {
