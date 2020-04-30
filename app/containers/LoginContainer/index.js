@@ -16,10 +16,13 @@ import makeSelectLoginContainer from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import './style.css';
+import { goToRoute } from '../App/actions';
 
-export function LoginContainer() {
+export function LoginContainer({ goToRoute }) {
   useInjectReducer({ key: 'loginContainer', reducer });
   useInjectSaga({ key: 'loginContainer', saga });
+
+  const goToSignUpPage = () => goToRoute('/auth/sign-up');
 
   return <div className="login-form w-50">
     <h1 className="text-center">MyMealtracker</h1>
@@ -32,7 +35,10 @@ export function LoginContainer() {
       <input type="password" className="form-control" id="exampleInputPassword1" />
     </div>
     <button type="submit" className="btn btn-primary">Login</button>
-
+    <div className="float-right">
+      No account?
+      <button onClick={() => goToSignUpPage()} type="button" className="btn btn-outline-primary ml-2">Sign Up</button>
+    </div>
   </div>;
 }
 
@@ -44,9 +50,9 @@ const mapStateToProps = createStructuredSelector({
   loginContainer: makeSelectLoginContainer(),
 });
 
-function mapDispatchToProps() {
+function mapDispatchToProps(dispatch) {
   return {
-    // dispatch: () => {}
+    goToRoute: (path) => dispatch(goToRoute(path)),
   };
 }
 

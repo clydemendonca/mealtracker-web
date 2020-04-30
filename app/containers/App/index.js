@@ -19,6 +19,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import LoginContainer from '../LoginContainer';
 import MainContainer from '../MainContainer';
+import SignUpContainer from '../SignUpContainer';
+
 import { goToRoute } from './actions';
 
 export function App({ app, goToRoute }) {
@@ -35,6 +37,7 @@ export function App({ app, goToRoute }) {
 
   return <Switch>
     <Route path="/auth/login" component={LoginContainer} />
+    <Route path="/auth/sign-up" component={SignUpContainer} />
     <Route path="/main" component={MainContainer} />
   </Switch>;
 }
