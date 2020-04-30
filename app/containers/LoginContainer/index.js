@@ -22,22 +22,22 @@ export function LoginContainer({ goToRoute }) {
   useInjectReducer({ key: 'loginContainer', reducer });
   useInjectSaga({ key: 'loginContainer', saga });
 
-  const goToSignUpPage = () => goToRoute('/auth/sign-up');
+  const onSignUpClicked = () => goToRoute('/auth/sign-up');
 
   return <div className="login-form w-50">
     <h1 className="text-center">MyMealtracker</h1>
     <div className="form-group">
-      <label htmlFor="exampleInputEmail1">Username</label>
-      <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+      <label htmlFor="username">Username</label>
+      <input type="text" className="form-control" id="username" aria-describedby="emailHelp" />
     </div>
     <div className="form-group">
-      <label htmlFor="exampleInputPassword1">Password</label>
-      <input type="password" className="form-control" id="exampleInputPassword1" />
+      <label htmlFor="password">Password</label>
+      <input type="password" className="form-control" id="password" />
     </div>
     <button type="submit" className="btn btn-primary">Login</button>
     <div className="float-right">
       No account?
-      <button onClick={() => goToSignUpPage()} type="button" className="btn btn-outline-primary ml-2">Sign Up</button>
+      <button onClick={() => onSignUpClicked()} type="button" className="btn btn-outline-primary ml-2">Sign Up</button>
     </div>
   </div>;
 }
