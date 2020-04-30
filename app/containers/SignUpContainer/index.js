@@ -18,8 +18,10 @@ import reducer from './reducer';
 import saga from './saga';
 
 import './style.css';
+import { showModal } from '../App/actions';
+import { signUp } from './actions';
 
-export function SignUpContainer() {
+export function SignUpContainer({ showModal, signUp }) {
   useInjectReducer({ key: 'signUpContainer', reducer });
   useInjectSaga({ key: 'signUpContainer', saga });
 
@@ -29,7 +31,11 @@ export function SignUpContainer() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSignUpClicked = () => {
-    if (username == "");
+    if (fullName == "") showModal('Error', 'Full Name is a required field');
+    else if (username == "") showModal('Error', 'Username is a required field');
+    else if (password == "") showModal('Error', 'Password is a required field');
+    else if (confirmPassword !== password) showModal('Error', 'Passwords dont match.');
+    else signUp(fullName, username, password);
   };
 
   return <div className="sign-up-form w-50">
@@ -40,17 +46,17 @@ export function SignUpContainer() {
     </FormGroup>
     <FormGroup>
       <Label for="username">Username</Label>
-      <Input value={username} onChange={(event) => setUsername(event.target.value)}  type="text" id="username" />
+      <Input value={username} onChange={(event) => setUsername(event.target.value)} type="text" id="username" />
     </FormGroup>
     <FormGroup>
       <Label for="password">Password</Label>
-      <Input value={password} onChange={(event) => setPassword(event.target.value)}  type="password" id="password" />
+      <Input value={password} onChange={(event) => setPassword(event.target.value)} type="password" id="password" />
     </FormGroup>
     <FormGroup>
       <Label for="confirmPassword">Confirm Password</Label>
-      <Input value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}  type="password" id="confirmPassword" />
+      <Input value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} type="password" id="confirmPassword" />
     </FormGroup>
-    <Button color="primary">Login</Button>
+    <Button color="primary" onClick={() => onSignUpClicked()}>Sign Up</Button>
   </div>;
 }
 
@@ -64,7 +70,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    showModal: (title, message) => dispatch(showModal(title, message)),
+    signUp: (fullName, username, password) => dispatch(signUp(fullName, username, password)),
   };
 }
 

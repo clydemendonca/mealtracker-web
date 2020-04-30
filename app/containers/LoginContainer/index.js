@@ -37,7 +37,7 @@ export function LoginContainer({ goToRoute }) {
     <Button color="primary">Login</Button>
     <div className="float-right">
       No account?
-      <Button className="ml-3" onClick={() => onSignUpClicked()}  outline color="primary">Sign Up</Button>
+      <Button className="ml-3" onClick={() => onSignUpClicked()} outline color="primary">Sign Up</Button>
     </div>
   </div>;
 }

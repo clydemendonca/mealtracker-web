@@ -21,9 +21,11 @@ import LoginContainer from '../LoginContainer';
 import MainContainer from '../MainContainer';
 import SignUpContainer from '../SignUpContainer';
 
-import { goToRoute } from './actions';
+import { goToRoute, hideModal } from './actions';
+import MealtrackerModal from '../../components/MealtrackerModal';
+import LoadingModal from '../../components/LoadingModal';
 
-export function App({ app, goToRoute }) {
+export function App({ app, goToRoute, hideModal }) {
   useInjectReducer({ key: 'app', reducer });
   useInjectSaga({ key: 'app', saga });
 
@@ -35,15 +37,38 @@ export function App({ app, goToRoute }) {
     }
   }, []);
 
-  return <Switch>
-    <Route path="/auth/login" component={LoginContainer} />
-    <Route path="/auth/sign-up" component={SignUpContainer} />
-    <Route path="/main" component={MainContainer} />
-  </Switch>;
+
+  return <div>
+
+    {
+      app.showLoadingModal ?
+        <LoadingModal message={app.showLoadingModal.message} />
+        : ''
+    }
+
+    {app.modal ?
+      <MealtrackerModal
+        title={app.modal.title}
+        message={app.modal.message}
+        onOkClicked={() => {
+          if (app.modal.pathToRerouteWhenOkIsClicked)
+            goToRoute(app.modal.pathToRerouteWhenOkIsClicked);
+
+          hideModal();
+        }}
+      />
+      : ''}
+    <Switch>
+      <Route path="/auth/login" component={LoginContainer} />
+      <Route path="/auth/sign-up" component={SignUpContainer} />
+      <Route path="/main" component={MainContainer} />
+    </Switch>
+  </div>;
 }
 
 App.propTypes = {
   goToRoute: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -53,6 +78,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     goToRoute: (path) => dispatch(goToRoute(path)),
+    hideModal: () => dispatch(hideModal()),
   };
 }
 
