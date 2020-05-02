@@ -5,6 +5,7 @@
  */
 import produce from 'immer';
 import { DEFAULT_ACTION, HIDE_MODAL, SHOW_MODAL, SHOW_LOADING, HIDE_LOADING } from './constants';
+import { LOGIN_SUCCESSFUL } from "../LoginContainer/constants";
 
 export const initialState = {
   user: {
@@ -52,6 +53,22 @@ const appReducer = (state = initialState, action) =>
           ...state,
           showLoadingModal: null
         };
+
+      case LOGIN_SUCCESSFUL:
+        const { token, username, fullName } = action.payload;
+
+        localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
+        localStorage.setItem('fullName', fullName);
+
+        return {
+          ...state,
+          user: {
+            token,
+            username,
+            fullName
+          }
+        }
 
     }
   });

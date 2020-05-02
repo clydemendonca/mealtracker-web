@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -16,11 +16,21 @@ import makeSelectLoginContainer from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import './style.css';
-import { goToRoute } from '../App/actions';
+import { goToRoute, showModal } from '../App/actions';
+import { login } from './actions';
 
-export function LoginContainer({ goToRoute }) {
+export function LoginContainer({ goToRoute, login, showModal }) {
   useInjectReducer({ key: 'loginContainer', reducer });
   useInjectSaga({ key: 'loginContainer', saga });
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLoginClicked = () => {
+    if(username === '') showModal('Error', 'Username is a required field');
+    if(password === '') showModal('Error', 'Password is a required field');
+    login(username, password);
+  }
 
   const onSignUpClicked = () => goToRoute('/auth/sign-up');
 
@@ -28,13 +38,13 @@ export function LoginContainer({ goToRoute }) {
     <h1 className="text-center">MyMealtracker</h1>
     <FormGroup>
       <Label for="username">Username</Label>
-      <Input type="text" name="text" id="username" />
+      <Input value={username} onChange={(event) => setUsername(event.target.value)} type="text" name="text" id="username" />
     </FormGroup>
     <FormGroup>
       <Label for="password">Password</Label>
-      <Input type="password" name="text" id="password" />
+      <Input value={password} onChange={(event) => setPassword(event.target.value)} type="password" name="text" id="password" />
     </FormGroup>
-    <Button color="primary">Login</Button>
+    <Button onClick={() => onLoginClicked()} color="primary">Login</Button>
     <div className="float-right">
       No account?
       <Button className="ml-3" onClick={() => onSignUpClicked()} outline color="primary">Sign Up</Button>
@@ -53,6 +63,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     goToRoute: (path) => dispatch(goToRoute(path)),
+    login: (username, password) => dispatch(login(username, password)),
+    showModal: (title, message) => dispatch(showModal(title, message))
   };
 }
 

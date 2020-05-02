@@ -30,13 +30,20 @@ export function App({ app, goToRoute, hideModal }) {
   useInjectSaga({ key: 'app', saga });
 
   useEffect(() => {
+    checkUserInfo();
+  }, []);
+
+  useEffect(() => {
+    checkUserInfo()
+  }, [app.user.token])
+
+  const checkUserInfo = () => {
     if (!app.user.token) {
       goToRoute('/auth/login');
     } else {
       goToRoute('/main');
     }
-  }, []);
-
+  };
 
   return <div>
 
