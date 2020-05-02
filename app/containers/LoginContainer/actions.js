@@ -23,13 +23,14 @@ export function login(username, password) {
   };
 }
 
-export function loginSuccessful(token, username, fullName) {
+export function loginSuccessful(token, username, fullName, role) {
   return {
     type: LOGIN_SUCCESSFUL,
     payload: {
       token,
       username,
-      fullName
+      fullName,
+      role
     }
   }
 }

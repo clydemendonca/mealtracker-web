@@ -11,7 +11,8 @@ export const initialState = {
   user: {
     token: localStorage.getItem('token'),
     fullName: localStorage.getItem('fullName'),
-    username: localStorage.getItem('username')
+    username: localStorage.getItem('username'),
+    role: localStorage.getItem('role')
   },
   modal: null,
   showLoadingModal: null,
@@ -55,20 +56,22 @@ const appReducer = (state = initialState, action) =>
         };
 
       case LOGIN_SUCCESSFUL:
-        const { token, username, fullName } = action.payload;
+        const { token, username, fullName, role } = action.payload;
 
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('fullName', fullName);
+        localStorage.setItem('role', role);
 
         return {
           ...state,
           user: {
             token,
             username,
-            fullName
+            fullName,
+            role
           }
-        }
+        };
 
     }
   });

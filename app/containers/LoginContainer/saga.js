@@ -26,8 +26,8 @@ function* loginSaga({ payload }) {
 
   console.log(response.status);
   if (response.status === 200) {
-    const { token, username, fullName } = responseData.user;
-    yield put(loginSuccessful(token, username, fullName));
+    const { token, username, fullName, role } = responseData.user;
+    yield put(loginSuccessful(token, username, fullName, role));
   } else {
     yield put(showModal('Error', responseData.message));
   }
