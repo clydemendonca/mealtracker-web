@@ -62,7 +62,7 @@ export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorie
             date.setHours(23);
             date.setMinutes(59);
             date.setSeconds(59);
-            setFromDate(date);
+            setToDate(date);
           }}
         />
       </FormGroup>
