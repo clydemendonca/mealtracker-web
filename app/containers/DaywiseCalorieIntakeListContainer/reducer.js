@@ -27,7 +27,7 @@ const daywiseCalorieIntakeListContainerReducer = (
         const daywiseCalorieIntakeForUser = calorieIntakeForUser.map((item) => {
           return {
             ...item,
-            isDailyGoalMet: item.calories >= dailyCalorieIntake
+            isTotalLessThanDailyCalorieIntake: item.total <= dailyCalorieIntake
           }
         });
 

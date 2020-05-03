@@ -19,9 +19,10 @@ import { fetchDaywiseCalorieIntake } from './actions';
 import makeSelectApp from '../App/selectors';
 import DatePicker from "react-datepicker";
 import { Label, FormGroup } from 'reactstrap';
+import DaywiseCalorieIntakeList from '../../components/DaywiseCalorieIntakeList';
 
 
-export function DaywiseCalorieIntakeListContainer({ appContainer, fetchDaywiseCalorieIntake }) {
+export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorieIntakeListContainer, fetchDaywiseCalorieIntake }) {
   useInjectReducer({ key: 'daywiseCalorieIntakeListContainer', reducer });
   useInjectSaga({ key: 'daywiseCalorieIntakeListContainer', saga });
 
@@ -65,6 +66,11 @@ export function DaywiseCalorieIntakeListContainer({ appContainer, fetchDaywiseCa
           }}
         />
       </FormGroup>
+
+      <div className="col-12">
+        <DaywiseCalorieIntakeList daywiseCalorieIntakeForUser={daywiseCalorieIntakeListContainer.daywiseCalorieIntakeForUser} />
+      </div>
+
     </div>
   </div>;
 }
