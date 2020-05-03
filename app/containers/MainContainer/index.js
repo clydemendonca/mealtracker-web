@@ -13,14 +13,27 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectMainContainer from './selectors';
+import makeSelectAppContainer from '../App/selectors';
 import reducer from './reducer';
 import saga from './saga';
+import MealtrackerNavbar from '../../components/MealtrackerNavbar';
+import MealtrackerUserRoutes from '../../components/MealtrackerUserRoutes';
+import MealtrackerAdminRoutes from '../../components/MealtrackerAdminRoutes';
 
-export function MainContainer() {
+export function MainContainer({ appContainer }) {
   useInjectReducer({ key: 'mainContainer', reducer });
   useInjectSaga({ key: 'mainContainer', saga });
 
-  return <div />;
+  return <div>
+    <MealtrackerNavbar fullName={appContainer.user.fullName} />
+
+    {
+      appContainer.user.role === 'ADMIN' ?
+        <MealtrackerAdminRoutes />
+        : <MealtrackerUserRoutes />
+    }
+
+  </div>;
 }
 
 MainContainer.propTypes = {
@@ -29,6 +42,7 @@ MainContainer.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   mainContainer: makeSelectMainContainer(),
+  appContainer: makeSelectAppContainer()
 });
 
 function mapDispatchToProps(dispatch) {
