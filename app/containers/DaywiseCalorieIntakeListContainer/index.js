@@ -18,11 +18,13 @@ import saga from './saga';
 import { fetchDaywiseCalorieIntake } from './actions';
 import makeSelectApp from '../App/selectors';
 import DatePicker from "react-datepicker";
-import { Label, FormGroup } from 'reactstrap';
+import { Label, FormGroup, Button } from 'reactstrap';
 import DaywiseCalorieIntakeList from '../../components/DaywiseCalorieIntakeList';
+import AddOrEditEntryModal from '../../components/AddOrEditEntryModal';
+import { createMeal } from '../MealsListContainer/actions';
 
 
-export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorieIntakeListContainer, fetchDaywiseCalorieIntake }) {
+export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorieIntakeListContainer, fetchDaywiseCalorieIntake, createMeal }) {
   useInjectReducer({ key: 'daywiseCalorieIntakeListContainer', reducer });
   useInjectSaga({ key: 'daywiseCalorieIntakeListContainer', saga });
 
@@ -36,6 +38,7 @@ export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorie
   return <div className="container mt-3">
 
     <div className="row">
+
       <FormGroup className="col-3">
         <Label>From</Label>
         <DatePicker

@@ -19,13 +19,14 @@ import saga from './saga';
 import MealtrackerNavbar from '../../components/MealtrackerNavbar';
 import MealtrackerUserRoutes from '../../components/MealtrackerUserRoutes';
 import MealtrackerAdminRoutes from '../../components/MealtrackerAdminRoutes';
+import { goToRoute } from '../App/actions';
 
-export function MainContainer({ appContainer }) {
+export function MainContainer({ appContainer, goToRoute }) {
   useInjectReducer({ key: 'mainContainer', reducer });
   useInjectSaga({ key: 'mainContainer', saga });
 
   return <div>
-    <MealtrackerNavbar fullName={appContainer.user.fullName} />
+    <MealtrackerNavbar fullName={appContainer.user.fullName} goToRoute={(path) => goToRoute(path) }  />
 
     {
       appContainer.user.role === 'ADMIN' ?
@@ -37,7 +38,7 @@ export function MainContainer({ appContainer }) {
 }
 
 MainContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  goToRoute: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -47,7 +48,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    goToRoute: (path) => dispatch(goToRoute(path)),
   };
 }
 
