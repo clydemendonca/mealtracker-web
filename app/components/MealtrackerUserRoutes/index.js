@@ -13,9 +13,10 @@ import MealsListContainer from '../../containers/MealsListContainer';
 
 function MealtrackerUserRoutes() {
   return <Switch>
-      <Route path="/main/calories" component={DaywiseCalorieIntakeListContainer} />
-      <Route path="/main/meals" component={MealsListContainer} />
-    </Switch>;
+    <Redirect exact path="/main" to="/main/calories" />
+    <Route path="/main/calories" component={DaywiseCalorieIntakeListContainer} />
+    <Route path="/main/meals" component={MealsListContainer} />
+  </Switch>;
 }
 
 MealtrackerUserRoutes.propTypes = {};

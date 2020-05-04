@@ -28,8 +28,19 @@ export function DaywiseCalorieIntakeListContainer({ appContainer, daywiseCalorie
   useInjectReducer({ key: 'daywiseCalorieIntakeListContainer', reducer });
   useInjectSaga({ key: 'daywiseCalorieIntakeListContainer', saga });
 
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  var INITIAL_FROM_DATE = new Date();
+  var INITIAL_TO_DATE = new Date();
+
+  INITIAL_FROM_DATE.setHours(0);
+  INITIAL_FROM_DATE.setMinutes(0);
+  INITIAL_FROM_DATE.setSeconds(0);
+
+  INITIAL_TO_DATE.setHours(23);
+  INITIAL_TO_DATE.setMinutes(59);
+  INITIAL_TO_DATE.setSeconds(59);
+
+  const [fromDate, setFromDate] = useState(INITIAL_FROM_DATE);
+  const [toDate, setToDate] = useState(INITIAL_TO_DATE);
 
   useEffect(() => {
     fetchDaywiseCalorieIntake(appContainer.user.token, fromDate.getTime(), toDate.getTime());

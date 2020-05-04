@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../../constants';
 import { fetchDaywiseCalorieIntakeSuccessful } from './actions';
 
 function fetchDaywiseCalorieIntake({ token, fromTimeInMilliseconds, toTimeInMilliseconds }) {
-  return fetch(`${API_BASE_URL}/meals?from=${fromTimeInMilliseconds}&to=${toTimeInMilliseconds}`, {
+  return fetch(`${API_BASE_URL}/meals/daywise?from=${fromTimeInMilliseconds}&to=${toTimeInMilliseconds}`, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'

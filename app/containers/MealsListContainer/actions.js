@@ -4,7 +4,7 @@
  *
  */
 
-import { DEFAULT_ACTION, CREATE_MEAL } from './constants';
+import { DEFAULT_ACTION, CREATE_MEAL, FETCH_MEALS, FETCH_MEALS_SUCCESSFUL } from './constants';
 
 export function defaultAction() {
   return {
@@ -20,6 +20,27 @@ export function createMeal(token, mealName, calories, timeInMilliseconds) {
       mealName,
       calories,
       timeInMilliseconds
+    }
+  }
+}
+
+export function fetchMeals(token, fromTimeInMilliseconds, toTimeInMilliseconds) {
+  return {
+    type: FETCH_MEALS,
+    payload: {
+      token,
+      fromTimeInMilliseconds,
+      toTimeInMilliseconds
+    }
+  }
+}
+
+
+export function fetchMealsSuccessful(meals) {
+  return {
+    type: FETCH_MEALS_SUCCESSFUL,
+    payload: {
+      meals
     }
   }
 }
