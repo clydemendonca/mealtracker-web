@@ -17,11 +17,11 @@ import reducer from './reducer';
 import saga from './saga';
 import AddOrEditEntryModal from '../../components/AddOrEditEntryModal';
 import { Button, FormGroup, Label, Table } from 'reactstrap';
-import { createMeal, fetchMeals } from './actions';
+import { createMeal, fetchMeals, updateMeal } from './actions';
 import makeSelectApp from '../App/selectors';
 import DatePicker from "react-datepicker";
 
-export function MealsListContainer({ appContainer, mealsListContainer, createMeal, fetchMeals }) {
+export function MealsListContainer({ appContainer, mealsListContainer, createMeal, fetchMeals, updateMeal }) {
   useInjectReducer({ key: 'mealsListContainer', reducer });
   useInjectSaga({ key: 'mealsListContainer', saga });
 
@@ -39,6 +39,7 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
   const [fromDate, setFromDate] = useState(INITIAL_FROM_DATE);
   const [toDate, setToDate] = useState(INITIAL_TO_DATE);
   const [isAddEntryVisible, setIsAddEntryVisible] = useState(false);
+  const [mealToEdit, setMealToEdit] = useState(null);
 
   useEffect(() => {
     fetchMeals(appContainer.user.token, fromDate.getTime(), toDate.getTime());
@@ -47,13 +48,22 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
   return <div className="container mt-3">
 
     {
-      isAddEntryVisible ?
+      isAddEntryVisible || mealToEdit ?
         <AddOrEditEntryModal
+          mealToEdit={mealToEdit}
           onSaveClicked={(mealName, calories, timeInMilliseconds) => {
-            createMeal(appContainer.user.token, mealName, calories, timeInMilliseconds);
+            if (!mealToEdit) {
+              createMeal(appContainer.user.token, mealName, calories, timeInMilliseconds);
+              setIsAddEntryVisible(false);
+            } else {
+              updateMeal(appContainer.user.token, mealToEdit.id, mealName, calories, timeInMilliseconds);
+              setMealToEdit(null);
+            }
+          }}
+          onCancelClicked={() => {
+            setMealToEdit(null);
             setIsAddEntryVisible(false);
           }}
-          onCancelClicked={() => setIsAddEntryVisible(false)}
         />
         : ''
     }
@@ -108,13 +118,13 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
           </thead>
           <tbody>
             {
-              mealsListContainer.meals.map(({ date, mealName, calories }) => {
+              mealsListContainer.meals.map(({ id, date, mealName, calories }) => {
                 return <tr key={date}>
                   <td>{new Date(date).toDateString()}</td>
                   <td>{mealName}</td>
                   <td>{calories}</td>
                   <td>
-                    <Button className="p-0" color="link">Edit</Button>
+                    <Button onClick={() => setMealToEdit({ id, date, mealName, calories })} className="p-0" color="link">Edit</Button>
                   </td>
                 </tr>
               })
@@ -141,7 +151,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     createMeal: (token, mealName, calories, timeInMilliseconds) => dispatch(createMeal(token, mealName, calories, timeInMilliseconds)),
-    fetchMeals: (token, fromTimeInMilliseconds, toTimeInMilliseconds) => dispatch(fetchMeals(token, fromTimeInMilliseconds, toTimeInMilliseconds))
+    fetchMeals: (token, fromTimeInMilliseconds, toTimeInMilliseconds) => dispatch(fetchMeals(token, fromTimeInMilliseconds, toTimeInMilliseconds)),
+    updateMeal: (token, mealId, mealName, calories, timeInMilliseconds) => dispatch(updateMeal(token, mealId, mealName, calories, timeInMilliseconds))
   };
 }
 

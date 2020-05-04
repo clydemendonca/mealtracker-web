@@ -10,11 +10,11 @@ import DatePicker from "react-datepicker";
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-function AddOrEditEntryModal({ onSaveClicked, onCancelClicked }) {
+function AddOrEditEntryModal({ mealToEdit, onSaveClicked, onCancelClicked }) {
 
-  const [mealName, setMealName] = useState("");
-  const [calories, setCalories] = useState(0);
-  const [date, setDate] = useState(new Date());
+  const [mealName, setMealName] = useState(mealToEdit ? mealToEdit.mealName : "");
+  const [calories, setCalories] = useState(mealToEdit ? mealToEdit.calories : 0);
+  const [date, setDate] = useState(mealToEdit ? new Date(mealToEdit.date) : new Date());
 
   return <Modal isOpen={true} toggle={() => { }}>
     <ModalHeader>Add Entry</ModalHeader>
