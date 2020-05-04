@@ -17,11 +17,12 @@ import reducer from './reducer';
 import saga from './saga';
 import AddOrEditEntryModal from '../../components/AddOrEditEntryModal';
 import { Button, FormGroup, Label, Table } from 'reactstrap';
-import { createMeal, fetchMeals, updateMeal } from './actions';
+import { createMeal, fetchMeals, updateMeal, deleteMeal } from './actions';
 import makeSelectApp from '../App/selectors';
 import DatePicker from "react-datepicker";
+import MealtrackerModal from '../../components/MealtrackerModal';
 
-export function MealsListContainer({ appContainer, mealsListContainer, createMeal, fetchMeals, updateMeal }) {
+export function MealsListContainer({ appContainer, mealsListContainer, createMeal, fetchMeals, updateMeal, deleteMeal }) {
   useInjectReducer({ key: 'mealsListContainer', reducer });
   useInjectSaga({ key: 'mealsListContainer', saga });
 
@@ -40,6 +41,7 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
   const [toDate, setToDate] = useState(INITIAL_TO_DATE);
   const [isAddEntryVisible, setIsAddEntryVisible] = useState(false);
   const [mealToEdit, setMealToEdit] = useState(null);
+  const [mealToDelete, setMealToDelete] = useState(null);
 
   useEffect(() => {
     fetchMeals(appContainer.user.token, fromDate.getTime(), toDate.getTime());
@@ -64,6 +66,20 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
             setMealToEdit(null);
             setIsAddEntryVisible(false);
           }}
+        />
+        : ''
+    }
+
+    {
+      mealToDelete ?
+        <MealtrackerModal
+          title={"Delete meal"}
+          message={`Are you sure you want to delete ${mealToDelete.mealName}?`}
+          onOkClicked={() => {
+            deleteMeal(appContainer.user.token, mealToDelete.id);
+            setMealToDelete(null);
+          }}
+          onCancelClicked={() => setMealToDelete(null)}
         />
         : ''
     }
@@ -125,6 +141,7 @@ export function MealsListContainer({ appContainer, mealsListContainer, createMea
                   <td>{calories}</td>
                   <td>
                     <Button onClick={() => setMealToEdit({ id, date, mealName, calories })} className="p-0" color="link">Edit</Button>
+                    <Button onClick={() => setMealToDelete({ id, date, mealName, calories })} className="ml-2 p-0 text-danger" color="link">Delete</Button>
                   </td>
                 </tr>
               })
@@ -152,7 +169,8 @@ function mapDispatchToProps(dispatch) {
   return {
     createMeal: (token, mealName, calories, timeInMilliseconds) => dispatch(createMeal(token, mealName, calories, timeInMilliseconds)),
     fetchMeals: (token, fromTimeInMilliseconds, toTimeInMilliseconds) => dispatch(fetchMeals(token, fromTimeInMilliseconds, toTimeInMilliseconds)),
-    updateMeal: (token, mealId, mealName, calories, timeInMilliseconds) => dispatch(updateMeal(token, mealId, mealName, calories, timeInMilliseconds))
+    updateMeal: (token, mealId, mealName, calories, timeInMilliseconds) => dispatch(updateMeal(token, mealId, mealName, calories, timeInMilliseconds)),
+    deleteMeal: (token, mealId) => dispatch(deleteMeal(token, mealId))
   };
 }
 

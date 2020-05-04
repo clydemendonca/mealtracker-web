@@ -4,7 +4,7 @@
  *
  */
 
-import { DEFAULT_ACTION, CREATE_MEAL, FETCH_MEALS, FETCH_MEALS_SUCCESSFUL, UPDATE_MEAL } from './constants';
+import { DEFAULT_ACTION, CREATE_MEAL, FETCH_MEALS, FETCH_MEALS_SUCCESSFUL, UPDATE_MEAL, DELETE_MEAL } from './constants';
 
 export function defaultAction() {
   return {
@@ -54,6 +54,17 @@ export function updateMeal(token, mealId, mealName, calories, timeInMilliseconds
       mealName,
       calories,
       timeInMilliseconds
+    }
+  }
+}
+
+
+export function deleteMeal(token, mealId) {
+  return {
+    type: DELETE_MEAL,
+    payload: {
+      token,
+      mealId
     }
   }
 }

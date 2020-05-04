@@ -1,6 +1,6 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { showLoading, hideLoading, showModal } from '../App/actions';
-import { CREATE_MEAL, FETCH_MEALS, UPDATE_MEAL } from './constants';
+import { CREATE_MEAL, FETCH_MEALS, UPDATE_MEAL, DELETE_MEAL } from './constants';
 import { API_BASE_URL } from '../../constants';
 import { fetchMealsSuccessful } from './actions';
 
@@ -101,10 +101,40 @@ function* updateMealSaga({ payload }) {
 }
 
 
+function deleteMeal({ token, mealId }) {
+  return fetch(`${API_BASE_URL}/meals/${mealId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  }) 
+}
+
+function* deleteMealSaga({ payload }) {
+
+  yield put(showLoading('Deleting entry...'));
+
+  const response = yield deleteMeal(payload);
+  const responseData = yield response.json();
+
+  yield put(hideLoading());
+
+  console.log(response.status);
+  if (response.status === 200) {
+    // yield put(loginSuccessful(token, username, fullName, role));
+    yield put(showModal('Success', responseData.message, '/main/calories'));
+  } else {
+    yield put(showModal('Error', responseData.message));
+  }
+
+}
+
 // Individual exports for testing
 export default function* mealsListContainerSaga() {
   // See example in containers/HomePage/saga.js
   yield takeLatest(CREATE_MEAL, createMealSaga);
   yield takeLatest(FETCH_MEALS, fetchMealsSaga);
   yield takeLatest(UPDATE_MEAL, updateMealSaga);
+  yield takeLatest(DELETE_MEAL, deleteMealSaga);
 }
